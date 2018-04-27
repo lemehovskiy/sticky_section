@@ -37,6 +37,19 @@ section {
   }
 }
 
+.section-spacer-1 {
+  background: #4ca5ff;
+  height: 100vh;
+}
+
+.section-spacer-2 {
+  background: #ba3f00;
+  height: 300px;
+}
+
+.section-spacer-3 {
+  background: #31c583;
+  height: 600px;
+}
 
 @import "partials/section-intro";
-@import "partials/section-features-list";
