@@ -57,7 +57,7 @@
                         if (self.in_area) return;
 
                         self.in_area = true;
-
+                        
                         self.$element.trigger('inArea.ss');
 
                         $('body').css({
