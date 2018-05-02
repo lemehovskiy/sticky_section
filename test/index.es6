@@ -62,6 +62,7 @@ $(document).ready(function () {
         $('.i-message-demo').iMessage('clear');
         $('.i-message-demo').iMessage('update_timescale', 1);
 
+        TweenLite.to('.left-col .text-wrap', 1, {opacity: 0});
         TweenLite.to('.right-col .text-wrap', 1, {opacity: 1, onComplete: function(){
 
             $('.i-message-demo').iMessage('play_dialog', [
