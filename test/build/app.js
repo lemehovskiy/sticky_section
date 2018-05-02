@@ -14420,10 +14420,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             value: function init() {
                 var self = this;
 
-                self.on_scroll();
+                self.scroll_handler();
 
                 $(window).on('scroll', function () {
-                    self.on_scroll();
+                    self.scroll_handler();
                 });
 
                 $(window).on('mousewheel', function (e) {
@@ -14438,10 +14438,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     //     console.log('scrolling down !');
                     // }
                 });
+
+                document.addEventListener('touchmove', function (e) {
+                    e.preventDefault();
+
+                    if (self.in_area) {
+                        self.scrolling();
+                    }
+                }, false);
             }
         }, {
-            key: 'on_scroll',
-            value: function on_scroll() {
+            key: 'scroll_handler',
+            value: function scroll_handler() {
                 var self = this;
 
                 self.scroll_top = $(window).scrollTop();

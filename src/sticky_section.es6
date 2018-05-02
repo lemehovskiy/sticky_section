@@ -45,10 +45,10 @@
             let self = this;
 
 
-            self.on_scroll();
+            self.scroll_handler();
 
             $(window).on('scroll', function () {
-                self.on_scroll();
+                self.scroll_handler();
             })
 
             $(window).on('mousewheel', function (e) {
@@ -63,9 +63,18 @@
                 //     console.log('scrolling down !');
                 // }
             });
+
+            document.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+
+                if (self.in_area) {
+                    self.scrolling();
+                }
+
+            }, false);
         }
 
-        on_scroll() {
+        scroll_handler() {
             let self = this;
 
             self.scroll_top = $(window).scrollTop();
