@@ -14,12 +14,12 @@
         constructor(element, options) {
 
             let self = this;
-            
+
             //extend by function call
             self.settings = $.extend(true, {
-               
+
                 test_property: false
-                
+
             }, options);
 
             self.$element = $(element);
@@ -38,40 +38,18 @@
 
             self.init();
         }
-        
-        init(){
+
+        init() {
             let self = this;
 
 
-            $(window).on('scroll', function(){
+            self.on_scroll();
 
-                self.scroll_top = $(window).scrollTop();
-
-                if (self.in_area) {
-                    // self.scrolling();
-                }
-
-                else {
-                    if (self.is_on_screen(0.6, 0.6)) {
-
-                        if (self.in_area) return;
-
-                        self.in_area = true;
-                        
-                        self.$element.trigger('inArea.ss');
-
-                        $('body').css({
-                            'overflow': 'hidden'
-                        })
-
-                        $('html').animate({scrollTop: self.$element.offset().top}, 500,'swing', function(){
-
-                        })
-                    }
-                }
+            $(window).on('scroll', function () {
+                self.on_scroll();
             })
 
-            $(window).bind('mousewheel', function(e){
+            $(window).bind('mousewheel', function (e) {
 
                 if (self.in_area) {
                     self.scrolling();
@@ -85,7 +63,40 @@
             });
         }
 
-        scrolling(){
+        on_scroll() {
+            let self = this;
+
+            self.scroll_top = $(window).scrollTop();
+
+            if (!self.in_area && self.is_on_screen(0.6, 0.6)) {
+
+                console.log('is_on_screen')
+
+                self.in_area = true;
+
+                self.$element.trigger('inArea.ss');
+
+                $('body').css({
+                    'overflow': 'hidden'
+                })
+
+                $('html').animate({scrollTop: self.$element.offset().top}, 500, 'swing', function () {
+                    console.log('animate');
+                })
+            }
+        }
+
+
+        unstick() {
+            let self = this;
+
+            $('body').css({
+                'overflow': 'visible'
+            })
+
+        }
+
+        scrolling() {
             let self = this;
 
             if (!(self.scroll_inprogress)) {
@@ -97,20 +108,20 @@
 
             clearTimeout($.data(this, 'scrollTimer'));
 
-            $.data(this, 'scrollTimer', setTimeout(function() {
+            $.data(this, 'scrollTimer', setTimeout(function () {
                 self.scroll_inprogress = false;
             }, 50));
         }
 
 
-        is_on_screen(x_offset, y_offset){
+        is_on_screen(x_offset, y_offset) {
 
             let self = this;
 
             var win = $(window),
                 viewport = {
-                    top : win.scrollTop(),
-                    left : win.scrollLeft()
+                    top: win.scrollTop(),
+                    left: win.scrollLeft()
                 },
                 height = self.$element.outerHeight(),
                 width = self.$element.outerWidth(),
@@ -121,7 +132,7 @@
             viewport.right = viewport.left + win.width();
             viewport.bottom = viewport.top + win.height();
 
-            if(!width || !height) return false;
+            if (!width || !height) return false;
 
             bounds.right = bounds.left + width;
             bounds.bottom = bounds.top + height;
@@ -133,22 +144,22 @@
                 viewport.top > bounds.bottom)
             );
 
-            if(!visible) return false;
+            if (!visible) return false;
 
             deltas = {
-                top:    Math.min(1, (bounds.bottom - viewport.top) / height),
+                top: Math.min(1, (bounds.bottom - viewport.top) / height),
                 bottom: Math.min(1, (viewport.bottom - bounds.top) / height),
-                left:   Math.min(1, (bounds.right - viewport.left) / width),
-                right:  Math.min(1, (viewport.right - bounds.left) / width)
+                left: Math.min(1, (bounds.right - viewport.left) / width),
+                right: Math.min(1, (viewport.right - bounds.left) / width)
             };
 
             return (deltas.left * deltas.right) >= x_offset && (deltas.top * deltas.bottom) >= y_offset;
         }
-        
+
     }
 
 
-    $.fn.stickySection = function() {
+    $.fn.stickySection = function () {
         let $this = this,
             opt = arguments[0],
             args = Array.prototype.slice.call(arguments, 1),
@@ -158,8 +169,8 @@
         for (i = 0; i < length; i++) {
             if (typeof opt == 'object' || typeof opt == 'undefined')
                 $this[i].sticky_section = new StickySection($this[i], opt);
-        else
-            ret = $this[i].sticky_section[opt].apply($this[i].sticky_section, args);
+            else
+                ret = $this[i].sticky_section[opt].apply($this[i].sticky_section, args);
             if (typeof ret != 'undefined') return ret;
         }
         return $this;

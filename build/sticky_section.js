@@ -119,28 +119,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             value: function init() {
                 var self = this;
 
+                self.on_scroll();
+
                 $(window).on('scroll', function () {
-
-                    self.scroll_top = $(window).scrollTop();
-
-                    if (self.in_area) {
-                        // self.scrolling();
-                    } else {
-                        if (self.is_on_screen(0.6, 0.6)) {
-
-                            if (self.in_area) return;
-
-                            self.in_area = true;
-
-                            self.$element.trigger('inArea.ss');
-
-                            $('body').css({
-                                'overflow': 'hidden'
-                            });
-
-                            $('html').animate({ scrollTop: self.$element.offset().top }, 500, 'swing', function () {});
-                        }
-                    }
+                    self.on_scroll();
                 });
 
                 $(window).bind('mousewheel', function (e) {
@@ -154,6 +136,39 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     // else{
                     //     console.log('scrolling down !');
                     // }
+                });
+            }
+        }, {
+            key: 'on_scroll',
+            value: function on_scroll() {
+                var self = this;
+
+                self.scroll_top = $(window).scrollTop();
+
+                if (!self.in_area && self.is_on_screen(0.6, 0.6)) {
+
+                    console.log('is_on_screen');
+
+                    self.in_area = true;
+
+                    self.$element.trigger('inArea.ss');
+
+                    $('body').css({
+                        'overflow': 'hidden'
+                    });
+
+                    $('html').animate({ scrollTop: self.$element.offset().top }, 500, 'swing', function () {
+                        console.log('animate');
+                    });
+                }
+            }
+        }, {
+            key: 'unstick',
+            value: function unstick() {
+                var self = this;
+
+                $('body').css({
+                    'overflow': 'visible'
                 });
             }
         }, {
