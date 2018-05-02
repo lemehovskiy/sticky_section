@@ -14426,7 +14426,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     self.on_scroll();
                 });
 
-                $(window).bind('mousewheel', function (e) {
+                $(window).on('mousewheel', function (e) {
 
                     if (self.in_area) {
                         self.scrolling();
@@ -14446,7 +14446,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                 self.scroll_top = $(window).scrollTop();
 
-                if (self.scroll_watch && self.is_on_screen(0.6, 0.6)) {
+                if (!self.in_area && self.scroll_watch && self.is_on_screen(0.6, 0.6)) {
 
                     console.log('is_on_screen');
 
