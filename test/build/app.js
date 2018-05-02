@@ -14458,7 +14458,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         'overflow': 'hidden'
                     });
 
-                    $('html').animate({ scrollTop: self.$element.offset().top }, 300, 'swing', function () {
+                    $('html, body').animate({ scrollTop: self.$element.offset().top }, 300, 'linear', function () {
                         console.log('animate');
                     });
                 }
