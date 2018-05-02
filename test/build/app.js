@@ -9059,14 +9059,28 @@ __webpack_require__(112);
 
 $(document).ready(function () {
 
-    $('.section-intro').on('inArea.ss', function () {
+    var $i_message_demo = $('.i-message-demo');
+    var $sticky_section = $('.section-intro');
 
-        TweenLite.to('.left-col .text-wrap', 1, { opacity: 1, onComplete: function onComplete() {
-                $('.section-intro').on('scrolling.ss', function () {
-                    $('.i-message-demo').iMessage('update_timescale', 10);
-                });
+    var first_scene_is_played = false;
 
-                $('.i-message-demo').iMessage('play_dialog', [{
+    $sticky_section.on('inArea.ss', function () {
+        first_scene();
+    });
+
+    $sticky_section.on('scrolling.ss', second_scene);
+
+    function update_time_scale() {
+        $i_message_demo.iMessage('update_timescale', 10);
+    }
+
+    function first_scene() {
+        TweenLite.to('.left-col .text-wrap', 1, {
+            opacity: 1, onComplete: function onComplete() {
+
+                $sticky_section.on('scrolling.ss', update_time_scale);
+
+                $i_message_demo.iMessage('play_dialog', [{
                     type: 'receive',
                     text: "Test receive 1"
                 }, {
@@ -9091,20 +9105,29 @@ $(document).ready(function () {
                     text: "Test send 3",
                     delay: "+=1",
                     after_play: function after_play() {
-                        second_slide();
+                        first_scene_is_played = true;
+                        $sticky_section.off('scrolling.ss', update_time_scale);
                     }
                 }]);
-            } });
-    });
+            }
+        });
+    }
 
-    function second_slide() {
-        $('.i-message-demo').iMessage('clear');
-        $('.i-message-demo').iMessage('update_timescale', 1);
+    function second_scene() {
+
+        if (!first_scene_is_played) return;
+
+        $sticky_section.off('scrolling.ss', second_scene);
+
+        $sticky_section.on('scrolling.ss', update_time_scale);
+        $i_message_demo.iMessage('update_timescale', 1);
+        $i_message_demo.iMessage('clear');
 
         TweenLite.to('.left-col .text-wrap', 1, { opacity: 0 });
-        TweenLite.to('.right-col .text-wrap', 1, { opacity: 1, onComplete: function onComplete() {
+        TweenLite.to('.right-col .text-wrap', 1, {
+            opacity: 1, onComplete: function onComplete() {
 
-                $('.i-message-demo').iMessage('play_dialog', [{
+                $i_message_demo.iMessage('play_dialog', [{
                     type: 'receive',
                     text: "New Test receive 1"
                 }, {
@@ -9126,10 +9149,12 @@ $(document).ready(function () {
                     text: "New Test send 3",
                     delay: "+=1",
                     after_play: function after_play() {
-                        $('.section-intro').stickySection('unstick');
+                        $sticky_section.stickySection('unwatch_scroll');
+                        $sticky_section.stickySection('unstick');
                     }
                 }]);
-            } });
+            }
+        });
     }
 
     $('.i-message-demo').iMessage();
@@ -14385,6 +14410,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
             self.scroll_inprogress = false;
 
+            self.scroll_watch = true;
+
             self.init();
         }
 
@@ -14419,7 +14446,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                 self.scroll_top = $(window).scrollTop();
 
-                if (!self.in_area && self.is_on_screen(0.6, 0.6)) {
+                if (self.scroll_watch && self.is_on_screen(0.6, 0.6)) {
 
                     console.log('is_on_screen');
 
@@ -14431,7 +14458,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         'overflow': 'hidden'
                     });
 
-                    $('html').animate({ scrollTop: self.$element.offset().top }, 500, 'swing', function () {
+                    $('html').animate({ scrollTop: self.$element.offset().top }, 300, 'swing', function () {
                         console.log('animate');
                     });
                 }
@@ -14441,9 +14468,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             value: function unstick() {
                 var self = this;
 
+                self.in_area = false;
+
                 $('body').css({
                     'overflow': 'visible'
                 });
+            }
+        }, {
+            key: 'unwatch_scroll',
+            value: function unwatch_scroll() {
+                var self = this;
+
+                self.scroll_watch = false;
             }
         }, {
             key: 'scrolling',

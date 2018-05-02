@@ -36,6 +36,8 @@
 
             self.scroll_inprogress = false;
 
+            self.scroll_watch = true; 
+
             self.init();
         }
 
@@ -68,7 +70,7 @@
 
             self.scroll_top = $(window).scrollTop();
 
-            if (!self.in_area && self.is_on_screen(0.6, 0.6)) {
+            if (self.scroll_watch && self.is_on_screen(0.6, 0.6)) {
 
                 console.log('is_on_screen')
 
@@ -80,7 +82,7 @@
                     'overflow': 'hidden'
                 })
 
-                $('html').animate({scrollTop: self.$element.offset().top}, 500, 'swing', function () {
+                $('html').animate({scrollTop: self.$element.offset().top}, 300, 'swing', function () {
                     console.log('animate');
                 })
             }
@@ -90,10 +92,18 @@
         unstick() {
             let self = this;
 
+            self.in_area = false;
+
             $('body').css({
                 'overflow': 'visible'
             })
 
+        }
+        
+        unwatch_scroll(){
+            let self = this;
+            
+            self.scroll_watch = false; 
         }
 
         scrolling() {
