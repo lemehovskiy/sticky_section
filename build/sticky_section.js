@@ -141,7 +141,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 });
 
                 document.addEventListener('touchmove', function (e) {
-                    e.preventDefault();
 
                     if (self.in_area) {
                         self.scrolling();
@@ -167,6 +166,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         'overflow': 'hidden'
                     });
 
+                    self.stop_body_scrolling(true);
+
                     $('html, body').animate({ scrollTop: self.$element.offset().top }, 300, 'linear', function () {
                         console.log('animate');
                     });
@@ -182,6 +183,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 $('body').css({
                     'overflow': 'visible'
                 });
+
+                self.stop_body_scrolling(false);
+            }
+        }, {
+            key: 'stop_body_scrolling',
+            value: function stop_body_scrolling(bool) {
+                var self = this;
+
+                if (bool === true) {
+                    document.body.addEventListener("touchmove", self.freezeVp, false);
+                } else {
+                    document.body.removeEventListener("touchmove", self.freezeVp, false);
+                }
+            }
+        }, {
+            key: 'freezeVp',
+            value: function freezeVp(e) {
+                e.preventDefault();
             }
         }, {
             key: 'unwatch_scroll',

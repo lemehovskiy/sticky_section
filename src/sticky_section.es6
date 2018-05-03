@@ -36,7 +36,7 @@
 
             self.scroll_inprogress = false;
 
-            self.scroll_watch = true; 
+            self.scroll_watch = true;
 
             self.init();
         }
@@ -64,8 +64,7 @@
                 // }
             });
 
-            document.addEventListener('touchmove', function(e) {
-                e.preventDefault();
+            document.addEventListener('touchmove', function (e) {
 
                 if (self.in_area) {
                     self.scrolling();
@@ -88,8 +87,10 @@
                 self.$element.trigger('inArea.ss');
 
                 $('body').css({
-                    'overflow': 'hidden'
+                    'overflow': 'hidden',
                 })
+
+                self.stop_body_scrolling(true);
 
                 $('html, body').animate({scrollTop: self.$element.offset().top}, 300, 'linear', function () {
                     console.log('animate');
@@ -104,15 +105,32 @@
             self.in_area = false;
 
             $('body').css({
-                'overflow': 'visible'
+                'overflow': 'visible',
             })
 
+            self.stop_body_scrolling(false);
+
         }
-        
-        unwatch_scroll(){
+
+        stop_body_scrolling(bool) {
             let self = this;
-            
-            self.scroll_watch = false; 
+
+            if (bool === true) {
+                document.body.addEventListener("touchmove", self.freezeVp, false);
+            } else {
+                document.body.removeEventListener("touchmove", self.freezeVp, false);
+            }
+        }
+
+
+        freezeVp (e) {
+            e.preventDefault();
+        };
+
+        unwatch_scroll() {
+            let self = this;
+
+            self.scroll_watch = false;
         }
 
         scrolling() {
