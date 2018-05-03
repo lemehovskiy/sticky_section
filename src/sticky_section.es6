@@ -52,22 +52,15 @@
             })
 
             $(window).on('mousewheel', function (e) {
-
                 if (self.in_area) {
-                    self.scrolling();
+                    self.mouse_wheel_handler();
                 }
-                // if(e.originalEvent.wheelDelta / 120 > 0) {
-                //     console.log('scrolling up !');
-                // }
-                // else{
-                //     console.log('scrolling down !');
-                // }
             });
 
             document.addEventListener('touchmove', function (e) {
 
                 if (self.in_area) {
-                    self.scrolling();
+                    self.mouse_wheel_handler();
                 }
 
             }, false);
@@ -82,13 +75,7 @@
 
                 console.log('is_on_screen')
 
-                self.in_area = true;
-
-                self.$element.trigger('inArea.ss');
-
-                $('body').css({
-                    'overflow': 'hidden',
-                })
+                self.stick();
 
                 self.stop_body_scrolling(true);
 
@@ -98,6 +85,18 @@
             }
         }
 
+        stick(){
+            let self = this;
+
+            self.in_area = true;
+
+            self.$element.trigger('inArea.ss');
+
+            $('body').css({
+                'overflow': 'hidden'
+            })
+
+        }
 
         unstick() {
             let self = this;
@@ -105,11 +104,10 @@
             self.in_area = false;
 
             $('body').css({
-                'overflow': 'visible',
+                'overflow': 'visible'
             })
 
             self.stop_body_scrolling(false);
-
         }
 
         stop_body_scrolling(bool) {
@@ -122,7 +120,6 @@
             }
         }
 
-
         freezeVp (e) {
             e.preventDefault();
         };
@@ -133,7 +130,7 @@
             self.scroll_watch = false;
         }
 
-        scrolling() {
+        mouse_wheel_handler() {
             let self = this;
 
             if (!(self.scroll_inprogress)) {
@@ -149,7 +146,6 @@
                 self.scroll_inprogress = false;
             }, 50));
         }
-
 
         is_on_screen(x_offset, y_offset) {
 

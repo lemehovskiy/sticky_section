@@ -128,22 +128,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 });
 
                 $(window).on('mousewheel', function (e) {
-
                     if (self.in_area) {
-                        self.scrolling();
+                        self.mouse_wheel_handler();
                     }
-                    // if(e.originalEvent.wheelDelta / 120 > 0) {
-                    //     console.log('scrolling up !');
-                    // }
-                    // else{
-                    //     console.log('scrolling down !');
-                    // }
                 });
 
                 document.addEventListener('touchmove', function (e) {
 
                     if (self.in_area) {
-                        self.scrolling();
+                        self.mouse_wheel_handler();
                     }
                 }, false);
             }
@@ -158,13 +151,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                     console.log('is_on_screen');
 
-                    self.in_area = true;
-
-                    self.$element.trigger('inArea.ss');
-
-                    $('body').css({
-                        'overflow': 'hidden'
-                    });
+                    self.stick();
 
                     self.stop_body_scrolling(true);
 
@@ -172,6 +159,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         console.log('animate');
                     });
                 }
+            }
+        }, {
+            key: 'stick',
+            value: function stick() {
+                var self = this;
+
+                self.in_area = true;
+
+                self.$element.trigger('inArea.ss');
+
+                $('body').css({
+                    'overflow': 'hidden'
+                });
             }
         }, {
             key: 'unstick',
@@ -210,8 +210,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 self.scroll_watch = false;
             }
         }, {
-            key: 'scrolling',
-            value: function scrolling() {
+            key: 'mouse_wheel_handler',
+            value: function mouse_wheel_handler() {
                 var self = this;
 
                 if (!self.scroll_inprogress) {

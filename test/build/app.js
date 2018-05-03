@@ -9053,113 +9053,217 @@ __webpack_require__(70);
 
 __webpack_require__(71);
 
+__webpack_require__(117);
+
 __webpack_require__(111);
 
 __webpack_require__(112);
 
 $(document).ready(function () {
 
-    var $i_message_demo = $('.i-message-demo');
-    var $sticky_section = $('.section-intro');
+    function desktop_imessage_layout() {
 
-    var first_scene_is_played = false;
+        var $i_message_demo = $('.section-intro.demo-desktop .i-message');
+        var $sticky_section = $('.section-intro.demo-desktop');
 
-    $sticky_section.on('inArea.ss', function () {
-        first_scene();
-    });
+        var first_scene_is_played = false;
 
-    $sticky_section.on('scrolling.ss', second_scene);
-
-    function update_time_scale() {
-        $i_message_demo.iMessage('update_timescale', 10);
-    }
-
-    function first_scene() {
-        TweenLite.to('.left-col .text-wrap', 1, {
-            opacity: 1, onComplete: function onComplete() {
-
-                $sticky_section.on('scrolling.ss', update_time_scale);
-
-                $i_message_demo.iMessage('play_dialog', [{
-                    type: 'receive',
-                    text: "Test receive 1"
-                }, {
-                    type: 'receive',
-                    text: "Test receive 2"
-                }, {
-                    type: 'send',
-                    text: "Test send 1",
-                    delay: "+=1"
-                }, {
-                    type: 'receive',
-                    text: "Test receive 3"
-                }, {
-                    type: 'receive',
-                    text: "Test receive 4"
-                }, {
-                    type: 'send',
-                    text: "Test send 2",
-                    delay: "+=1"
-                }, {
-                    type: 'send',
-                    text: "Test send 3",
-                    delay: "+=1",
-                    after_play: function after_play() {
-                        first_scene_is_played = true;
-                        $sticky_section.off('scrolling.ss', update_time_scale);
-                    }
-                }]);
-            }
+        $sticky_section.on('inArea.ss', function () {
+            first_scene();
         });
+
+        $sticky_section.on('scrolling.ss', second_scene);
+
+        function update_time_scale() {
+            $i_message_demo.iMessage('update_timescale', 10);
+        }
+
+        function first_scene() {
+            TweenLite.to('.left-col .text-wrap', 1, {
+                opacity: 1, onComplete: function onComplete() {
+
+                    $sticky_section.on('scrolling.ss', update_time_scale);
+
+                    $i_message_demo.iMessage('play_dialog', [{
+                        type: 'receive',
+                        text: "Test receive 2222  22221"
+                    }, {
+                        type: 'receive',
+                        text: "Test receive 2"
+                    }, {
+                        type: 'send',
+                        text: "Test send 1 send send send",
+                        delay: "+=1"
+                    }, {
+                        type: 'receive',
+                        text: "Test receive 3"
+                    }, {
+                        type: 'receive',
+                        text: "Test receive 4"
+                    }, {
+                        type: 'send',
+                        text: "Test send 2",
+                        delay: "+=1"
+                    }, {
+                        type: 'send',
+                        text: "Test send 3",
+                        delay: "+=1",
+                        after_play: function after_play() {
+                            first_scene_is_played = true;
+                            $sticky_section.off('scrolling.ss', update_time_scale);
+                        }
+                    }]);
+                }
+            });
+        }
+
+        function second_scene() {
+
+            if (!first_scene_is_played) return;
+
+            $sticky_section.off('scrolling.ss', second_scene);
+
+            $sticky_section.on('scrolling.ss', update_time_scale);
+            $i_message_demo.iMessage('update_timescale', 1);
+            $i_message_demo.iMessage('clear');
+
+            TweenLite.to('.left-col .text-wrap', 1, { opacity: 0 });
+            TweenLite.to('.right-col .text-wrap', 1, {
+                opacity: 1, onComplete: function onComplete() {
+
+                    $i_message_demo.iMessage('play_dialog', [{
+                        type: 'receive',
+                        text: "New Test receive"
+                    }, {
+                        type: 'send',
+                        text: "New Test send 1 send send",
+                        delay: "+=1"
+                    }, {
+                        type: 'receive',
+                        text: "New Test receive 2"
+                    }, {
+                        type: 'send',
+                        text: "New Test send 2",
+                        delay: "+=1"
+                    }, {
+                        type: 'receive',
+                        text: "New Test receive 3"
+                    }, {
+                        type: 'send',
+                        text: "New Test send 3",
+                        delay: "+=1",
+                        after_play: function after_play() {
+                            $sticky_section.stickySection('unwatch_scroll');
+                            $sticky_section.stickySection('unstick');
+                        }
+                    }]);
+                }
+            });
+        }
+
+        $i_message_demo.iMessage();
+        $sticky_section.stickySection();
     }
 
-    function second_scene() {
+    function mobile_imessage_layout() {
 
-        if (!first_scene_is_played) return;
+        var first_animation_played = false;
+        var second_animation_played = false;
 
-        $sticky_section.off('scrolling.ss', second_scene);
+        var $first_mobile_imessage = $('.section-intro.demo-mobile .first-slide .i-message');
+        var $second_mobile_imessage = $('.section-intro.demo-mobile .second-slide .i-message');
 
-        $sticky_section.on('scrolling.ss', update_time_scale);
-        $i_message_demo.iMessage('update_timescale', 1);
-        $i_message_demo.iMessage('clear');
+        $first_mobile_imessage.iMessage();
+        $second_mobile_imessage.iMessage();
 
-        TweenLite.to('.left-col .text-wrap', 1, { opacity: 0 });
-        TweenLite.to('.right-col .text-wrap', 1, {
-            opacity: 1, onComplete: function onComplete() {
+        function play_first_mobile_dialog() {
 
-                $i_message_demo.iMessage('play_dialog', [{
-                    type: 'receive',
-                    text: "New Test receive 1"
-                }, {
-                    type: 'send',
-                    text: "New Test send 1",
-                    delay: "+=1"
-                }, {
-                    type: 'receive',
-                    text: "New Test receive 2"
-                }, {
-                    type: 'send',
-                    text: "New Test send 2",
-                    delay: "+=1"
-                }, {
-                    type: 'receive',
-                    text: "New Test receive 3"
-                }, {
-                    type: 'send',
-                    text: "New Test send 3",
-                    delay: "+=1",
-                    after_play: function after_play() {
-                        $sticky_section.stickySection('unwatch_scroll');
-                        $sticky_section.stickySection('unstick');
-                    }
-                }]);
+            first_animation_played = true;
+
+            $first_mobile_imessage.iMessage('play_dialog', [{
+                type: 'receive',
+                text: "Test receive 111111111"
+            }, {
+                type: 'receive',
+                text: "Test receive 2"
+            }, {
+                type: 'send',
+                text: "Test send 1",
+                delay: "+=1"
+            }, {
+                type: 'receive',
+                text: "Test receive 3"
+            }, {
+                type: 'receive',
+                text: "Test receive 4"
+            }, {
+                type: 'send',
+                text: "Test send 2",
+                delay: "+=1"
+            }, {
+                type: 'send',
+                text: "Test send 3",
+                delay: "+=1"
+            }]);
+        }
+
+        function play_second_mobile_dialog() {
+
+            second_animation_played = true;
+
+            $second_mobile_imessage.iMessage('play_dialog', [{
+                type: 'receive',
+                text: "Test receive 1111111"
+            }, {
+                type: 'receive',
+                text: "Test receive 2"
+            }, {
+                type: 'send',
+                text: "Test send 1",
+                delay: "+=1"
+            }, {
+                type: 'receive',
+                text: "Test receive 3"
+            }, {
+                type: 'receive',
+                text: "Test receive 4"
+            }, {
+                type: 'send',
+                text: "Test send 2",
+                delay: "+=1"
+            }, {
+                type: 'send',
+                text: "Test send 3",
+                delay: "+=1"
+            }]);
+        }
+
+        function is_on_screen_handler() {
+            if ($('.section-intro.demo-mobile .first-slide').isOnScreen(0.8, 0.8) && !first_animation_played) {
+                play_first_mobile_dialog();
             }
-        });
+
+            if ($('.section-intro.demo-mobile .second-slide').isOnScreen(0.8, 0.8) && !second_animation_played) {
+                play_second_mobile_dialog();
+            }
+
+            if (first_animation_played && second_animation_played) {
+                $(window).off('scroll', is_on_screen_handler);
+            }
+        }
+
+        $(window).on('scroll', is_on_screen_handler);
+
+        is_on_screen_handler();
     }
 
-    $('.i-message-demo').iMessage();
+    if ($('.section-intro.demo-desktop').length > 0) {
+        desktop_imessage_layout();
+    }
 
-    $('.section-intro').stickySection();
+    if ($('.section-intro.demo-mobile').length > 0) {
+        mobile_imessage_layout();
+    }
 });
 
 /***/ }),
@@ -14427,22 +14531,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 });
 
                 $(window).on('mousewheel', function (e) {
-
                     if (self.in_area) {
-                        self.scrolling();
+                        self.mouse_wheel_handler();
                     }
-                    // if(e.originalEvent.wheelDelta / 120 > 0) {
-                    //     console.log('scrolling up !');
-                    // }
-                    // else{
-                    //     console.log('scrolling down !');
-                    // }
                 });
 
                 document.addEventListener('touchmove', function (e) {
 
                     if (self.in_area) {
-                        self.scrolling();
+                        self.mouse_wheel_handler();
                     }
                 }, false);
             }
@@ -14457,13 +14554,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                     console.log('is_on_screen');
 
-                    self.in_area = true;
-
-                    self.$element.trigger('inArea.ss');
-
-                    $('body').css({
-                        'overflow': 'hidden'
-                    });
+                    self.stick();
 
                     self.stop_body_scrolling(true);
 
@@ -14471,6 +14562,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         console.log('animate');
                     });
                 }
+            }
+        }, {
+            key: 'stick',
+            value: function stick() {
+                var self = this;
+
+                self.in_area = true;
+
+                self.$element.trigger('inArea.ss');
+
+                $('body').css({
+                    'overflow': 'hidden'
+                });
             }
         }, {
             key: 'unstick',
@@ -14509,8 +14613,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 self.scroll_watch = false;
             }
         }, {
-            key: 'scrolling',
-            value: function scrolling() {
+            key: 'mouse_wheel_handler',
+            value: function mouse_wheel_handler() {
                 var self = this;
 
                 if (!self.scroll_inprogress) {
@@ -14661,13 +14765,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/*
- Version: 1.0.0
- Author: lemehovskiy
- Website: http://lemehovskiy.github.io
- Repo: https://github.com/lemehovskiy/i_message
- */
-
 
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -14675,6 +14772,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+__webpack_require__(1);
+
+/*
+ Version: 1.0.0
+ Author: lemehovskiy
+ Website: http://lemehovskiy.github.io
+ Repo: https://github.com/lemehovskiy/i_message
+ */
+
+'use strict';
 
 (function ($) {
     var IMessage = function () {
@@ -14692,10 +14800,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             self.data_options = self.$element.data('i-message');
             self.settings = $.extend(true, self.settings, self.data_options);
 
-            self.$input_wrap = $('.input-wrap');
-            self.$input = $('.input-i-message');
+            self.$container = self.$element.parent();
 
-            self.$btn_send = $('.btn-send');
+            self.$input_wrap = self.$element.find('.input-wrap');
+            self.$input = self.$element.find('.input-i-message');
+            self.$message_list = self.$element.find('.i-message-list');
+
+            self.$btn_send = self.$element.find('.btn-send');
+
+            self.$extra_btn_1 = self.$element.find('.extra-button:nth-child(1)');
+            self.$extra_btn_2 = self.$element.find('.extra-button:nth-child(2)');
+            self.$extra_btn_3 = self.$element.find('.extra-button:nth-child(3)');
 
             self.master_tl = new TimelineMax();
 
@@ -14710,6 +14825,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             key: 'init',
             value: function init() {
                 var self = this;
+
+                self.resize();
+
+                $(window).on('resize', function () {
+                    self.resize();
+                });
             }
         }, {
             key: 'clear',
@@ -14721,6 +14842,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 });
 
                 self.messages = [];
+            }
+        }, {
+            key: 'resize',
+            value: function resize() {
+                var self = this;
+
+                var container_width = self.$container.innerWidth();
+
+                var scale_coef = 1;
+
+                if (container_width < 300) {
+                    scale_coef = container_width / 300;
+                } else if (container_width > 300) {
+                    scale_coef = 1;
+                }
+
+                self.$element.css({
+                    '-webkit-transform': 'scale(' + scale_coef + ')',
+                    '-moz-transform': 'scale(' + scale_coef + ')',
+                    '-ms-transform': 'scale(' + scale_coef + ')',
+                    '-o-transform': 'scale(' + scale_coef + ')',
+                    'transform': 'scale(' + scale_coef + ')'
+                });
             }
         }, {
             key: 'play_dialog',
@@ -14769,11 +14913,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     $spacer: $incoming_message_spacer
                 });
 
-                $('.i-message-list').append($incoming_message_spacer);
+                self.$message_list.append($incoming_message_spacer);
                 $incoming_message_spacer.append($incoming_message);
 
                 main_tl.add(function () {
-                    $('.i-message-list').append($incoming_message_spacer);
+                    self.$message_list.append($incoming_message_spacer);
                     $incoming_message_spacer.append($incoming_message);
                 });
 
@@ -14805,10 +14949,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     self.$input.text('');
                     self.$btn_send.addClass('active');
                     self.$input.addClass('active');
-                    $('.i-message-list').append($outgoing_message_spacer);
+                    self.$message_list.append($outgoing_message_spacer);
                 });
 
-                main_tl.to('.input-i-message', message.text.length / speed, {
+                main_tl.to(self.$input, message.text.length / speed, {
                     text: message.text,
                     ease: Linear.easeNone,
 
@@ -14890,9 +15034,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                 self.is_input_wide = false;
 
-                extra_btn_tl.to('.extra-button:nth-child(3)', 0.3, { x: 0, opacity: 0 });
-                extra_btn_tl.to('.extra-button:nth-child(2)', 0.3, { x: 0, opacity: 1 }, '-=0.2');
-                extra_btn_tl.to('.extra-button:nth-child(1)', 0.3, { x: 0, opacity: 1 }, '-=0.2');
+                extra_btn_tl.to(self.$extra_btn_3, 0.3, { x: 0, opacity: 0 });
+                extra_btn_tl.to(self.$extra_btn_2, 0.3, { x: 0, opacity: 1 }, '-=0.2');
+                extra_btn_tl.to(self.$extra_btn_1, 0.3, { x: 0, opacity: 1 }, '-=0.2');
 
                 return extra_btn_tl;
             }
@@ -14906,9 +15050,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                 var extra_btn_tl = new TimelineMax();
 
-                extra_btn_tl.to('.extra-button:nth-child(1)', 0.3, { x: -10, opacity: 0 });
-                extra_btn_tl.to('.extra-button:nth-child(2)', 0.3, { x: -10, opacity: 0 }, '-=0.2');
-                extra_btn_tl.to('.extra-button:nth-child(3)', 0.3, { x: -43, opacity: 1 }, '-=0.2');
+                extra_btn_tl.to(self.$extra_btn_1, 0.3, { x: -10, opacity: 0 });
+                extra_btn_tl.to(self.$extra_btn_2, 0.3, { x: -10, opacity: 0 }, '-=0.2');
+                extra_btn_tl.to(self.$extra_btn_3, 0.3, { x: -43, opacity: 1 }, '-=0.2');
 
                 return extra_btn_tl;
             }
@@ -14943,8 +15087,66 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     };
 })(jQuery);
 
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
 /***/ })
 /******/ ]);
+
+/***/ }),
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */
+/***/ (function(module, exports) {
+
+(function($) {
+    $.fn.isOnScreen = function(x_offset, y_offset) {
+        if(x_offset == null || typeof x_offset == 'undefined') x_offset = 1;
+        if(y_offset == null || typeof y_offset == 'undefined') y_offset = 1;
+
+        var win = $(window),
+            viewport = {
+                top : win.scrollTop(),
+                left : win.scrollLeft()
+            },
+            height = this.outerHeight(),
+            width = this.outerWidth(),
+            bounds = this.offset(),
+            visible,
+            deltas;
+
+        viewport.right = viewport.left + win.width();
+        viewport.bottom = viewport.top + win.height();
+
+        if(!width || !height) return false;
+
+        bounds.right = bounds.left + width;
+        bounds.bottom = bounds.top + height;
+
+        visible = (
+            !(viewport.right < bounds.left ||
+            viewport.left > bounds.right ||
+            viewport.bottom < bounds.top ||
+            viewport.top > bounds.bottom)
+        );
+
+        if(!visible) return false;
+
+        deltas = {
+            top:    Math.min(1, (bounds.bottom - viewport.top) / height),
+            bottom: Math.min(1, (viewport.bottom - bounds.top) / height),
+            left:   Math.min(1, (bounds.right - viewport.left) / width),
+            right:  Math.min(1, (viewport.right - bounds.left) / width)
+        };
+
+        return (deltas.left * deltas.right) >= x_offset && (deltas.top * deltas.bottom) >= y_offset;
+    };
+})(jQuery);
 
 /***/ })
 /******/ ]);

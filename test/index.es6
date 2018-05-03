@@ -2,6 +2,8 @@ require("./sass/style.scss");
 
 require("jquery");
 
+require('./jquery.isonscreen');
+
 require('../build/sticky_section.js');
 
 import TextPlugin from "gsap/TextPlugin";
@@ -11,124 +13,245 @@ require('../../i_message/build/i_message.js');
 
 $(document).ready(function () {
 
+    function desktop_imessage_layout() {
 
-    let $i_message_demo = $('.i-message-demo');
-    let $sticky_section = $('.section-intro');
+        let $i_message_demo = $('.section-intro.demo-desktop .i-message');
+        let $sticky_section = $('.section-intro.demo-desktop');
 
-    let first_scene_is_played = false;
+        let first_scene_is_played = false;
 
-    $sticky_section.on('inArea.ss', function () {
-        first_scene();
-    })
-
-    $sticky_section.on('scrolling.ss', second_scene)
-
-
-    function update_time_scale() {
-        $i_message_demo.iMessage('update_timescale', 10);
-    }
-
-
-    function first_scene() {
-        TweenLite.to('.left-col .text-wrap', 1, {
-            opacity: 1, onComplete: function () {
-
-                $sticky_section.on('scrolling.ss', update_time_scale);
-
-                $i_message_demo.iMessage('play_dialog', [
-                    {
-                        type: 'receive',
-                        text: "Test receive 1"
-                    },
-                    {
-                        type: 'receive',
-                        text: "Test receive 2"
-                    },
-                    {
-                        type: 'send',
-                        text: "Test send 1",
-                        delay: "+=1"
-                    },
-                    {
-                        type: 'receive',
-                        text: "Test receive 3"
-                    },
-                    {
-                        type: 'receive',
-                        text: "Test receive 4"
-                    },
-                    {
-                        type: 'send',
-                        text: "Test send 2",
-                        delay: "+=1"
-                    },
-                    {
-                        type: 'send',
-                        text: "Test send 3",
-                        delay: "+=1",
-                        after_play: function () {
-                            first_scene_is_played = true;
-                            $sticky_section.off('scrolling.ss', update_time_scale);
-                        }
-                    }
-                ]);
-            }
+        $sticky_section.on('inArea.ss', function () {
+            first_scene();
         })
-    }
 
-    function second_scene() {
+        $sticky_section.on('scrolling.ss', second_scene)
 
-        if (!first_scene_is_played) return;
 
-        $sticky_section.off('scrolling.ss', second_scene)
+        function update_time_scale() {
+            $i_message_demo.iMessage('update_timescale', 10);
+        }
 
-        $sticky_section.on('scrolling.ss', update_time_scale);
-        $i_message_demo.iMessage('update_timescale', 1);
-        $i_message_demo.iMessage('clear');
 
-        TweenLite.to('.left-col .text-wrap', 1, {opacity: 0});
-        TweenLite.to('.right-col .text-wrap', 1, {
-            opacity: 1, onComplete: function () {
+        function first_scene() {
+            TweenLite.to('.left-col .text-wrap', 1, {
+                opacity: 1, onComplete: function () {
 
-                $i_message_demo.iMessage('play_dialog', [
-                    {
-                        type: 'receive',
-                        text: "New Test receive 1"
-                    },
-                    {
-                        type: 'send',
-                        text: "New Test send 1",
-                        delay: "+=1"
-                    },
-                    {
-                        type: 'receive',
-                        text: "New Test receive 2"
-                    },
-                    {
-                        type: 'send',
-                        text: "New Test send 2",
-                        delay: "+=1"
-                    },
-                    {
-                        type: 'receive',
-                        text: "New Test receive 3"
-                    },
-                    {
-                        type: 'send',
-                        text: "New Test send 3",
-                        delay: "+=1",
-                        after_play: function () {
-                            $sticky_section.stickySection('unwatch_scroll');
-                            $sticky_section.stickySection('unstick');
+                    $sticky_section.on('scrolling.ss', update_time_scale);
+
+                    $i_message_demo.iMessage('play_dialog', [
+                        {
+                            type: 'receive',
+                            text: "Test receive 2222  22221"
+                        },
+                        {
+                            type: 'receive',
+                            text: "Test receive 2"
+                        },
+                        {
+                            type: 'send',
+                            text: "Test send 1 send send send",
+                            delay: "+=1"
+                        },
+                        {
+                            type: 'receive',
+                            text: "Test receive 3"
+                        },
+                        {
+                            type: 'receive',
+                            text: "Test receive 4"
+                        },
+                        {
+                            type: 'send',
+                            text: "Test send 2",
+                            delay: "+=1"
+                        },
+                        {
+                            type: 'send',
+                            text: "Test send 3",
+                            delay: "+=1",
+                            after_play: function () {
+                                first_scene_is_played = true;
+                                $sticky_section.off('scrolling.ss', update_time_scale);
+                            }
                         }
-                    }
-                ]);
-            }
-        })
+                    ]);
+                }
+            })
+        }
+
+        function second_scene() {
+
+            if (!first_scene_is_played) return;
+
+            $sticky_section.off('scrolling.ss', second_scene)
+
+            $sticky_section.on('scrolling.ss', update_time_scale);
+            $i_message_demo.iMessage('update_timescale', 1);
+            $i_message_demo.iMessage('clear');
+
+            TweenLite.to('.left-col .text-wrap', 1, {opacity: 0});
+            TweenLite.to('.right-col .text-wrap', 1, {
+                opacity: 1, onComplete: function () {
+
+                    $i_message_demo.iMessage('play_dialog', [
+                        {
+                            type: 'receive',
+                            text: "New Test receive"
+                        },
+                        {
+                            type: 'send',
+                            text: "New Test send 1 send send",
+                            delay: "+=1"
+                        },
+                        {
+                            type: 'receive',
+                            text: "New Test receive 2"
+                        },
+                        {
+                            type: 'send',
+                            text: "New Test send 2",
+                            delay: "+=1"
+                        },
+                        {
+                            type: 'receive',
+                            text: "New Test receive 3"
+                        },
+                        {
+                            type: 'send',
+                            text: "New Test send 3",
+                            delay: "+=1",
+                            after_play: function () {
+                                $sticky_section.stickySection('unwatch_scroll');
+                                $sticky_section.stickySection('unstick');
+                            }
+                        }
+                    ]);
+                }
+            })
+        }
+
+
+        $i_message_demo.iMessage();
+        $sticky_section.stickySection();
     }
 
 
-    $('.i-message-demo').iMessage();
+    function mobile_imessage_layout() {
 
-    $('.section-intro').stickySection();
+        let first_animation_played = false;
+        let second_animation_played = false;
+
+        let $first_mobile_imessage = $('.section-intro.demo-mobile .first-slide .i-message');
+        let $second_mobile_imessage = $('.section-intro.demo-mobile .second-slide .i-message');
+
+        $first_mobile_imessage.iMessage();
+        $second_mobile_imessage.iMessage();
+
+        function play_first_mobile_dialog() {
+
+            first_animation_played = true;
+
+            $first_mobile_imessage.iMessage('play_dialog', [
+                {
+                    type: 'receive',
+                    text: "Test receive 111111111"
+                },
+                {
+                    type: 'receive',
+                    text: "Test receive 2"
+                },
+                {
+                    type: 'send',
+                    text: "Test send 1",
+                    delay: "+=1"
+                },
+                {
+                    type: 'receive',
+                    text: "Test receive 3"
+                },
+                {
+                    type: 'receive',
+                    text: "Test receive 4"
+                },
+                {
+                    type: 'send',
+                    text: "Test send 2",
+                    delay: "+=1"
+                },
+                {
+                    type: 'send',
+                    text: "Test send 3",
+                    delay: "+=1"
+                }
+            ]);
+        }
+
+        function play_second_mobile_dialog() {
+
+            second_animation_played = true;
+
+            $second_mobile_imessage.iMessage('play_dialog', [
+                {
+                    type: 'receive',
+                    text: "Test receive 1111111"
+                },
+                {
+                    type: 'receive',
+                    text: "Test receive 2"
+                },
+                {
+                    type: 'send',
+                    text: "Test send 1",
+                    delay: "+=1"
+                },
+                {
+                    type: 'receive',
+                    text: "Test receive 3"
+                },
+                {
+                    type: 'receive',
+                    text: "Test receive 4"
+                },
+                {
+                    type: 'send',
+                    text: "Test send 2",
+                    delay: "+=1"
+                },
+                {
+                    type: 'send',
+                    text: "Test send 3",
+                    delay: "+=1"
+                }
+            ]);
+        }
+
+
+        function is_on_screen_handler(){
+            if ($('.section-intro.demo-mobile .first-slide').isOnScreen(0.8, 0.8) && !first_animation_played) {
+                play_first_mobile_dialog();
+            }
+
+            if ($('.section-intro.demo-mobile .second-slide').isOnScreen(0.8, 0.8) && !second_animation_played) {
+                play_second_mobile_dialog();
+            }
+
+            if (first_animation_played && second_animation_played) {
+                $(window).off('scroll', is_on_screen_handler);
+            }
+        }
+
+        $(window).on('scroll', is_on_screen_handler);
+
+        is_on_screen_handler();
+    }
+
+
+    if ($('.section-intro.demo-desktop').length > 0) {
+        desktop_imessage_layout();
+    }
+
+    if ($('.section-intro.demo-mobile').length > 0) {
+        mobile_imessage_layout();
+    }
+
 });
