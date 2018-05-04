@@ -212,6 +212,12 @@ section {
   color: white;
 }
 
+@media (max-width: 1500px) {
+  .section-intro.demo-desktop {
+    display: none;
+  }
+}
+
 .section-intro.demo-desktop .container {
   width: 100%;
   display: -webkit-box;
@@ -247,6 +253,12 @@ section {
 .section-intro.demo-desktop .right-col .text-wrap {
   margin: 0 auto 0 0;
   opacity: 0;
+}
+
+@media (min-width: 1501px) {
+  .section-intro.demo-mobile {
+    display: none;
+  }
 }
 
 .section-intro.demo-mobile .i-message {

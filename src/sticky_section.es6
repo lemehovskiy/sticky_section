@@ -123,6 +123,12 @@
         freezeVp (e) {
             e.preventDefault();
         };
+        
+        watch_scroll(){
+            let self = this;
+
+            self.scroll_watch = true;
+        }
 
         unwatch_scroll() {
             let self = this;

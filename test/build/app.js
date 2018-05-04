@@ -9053,128 +9053,133 @@ __webpack_require__(70);
 
 __webpack_require__(71);
 
-__webpack_require__(117);
-
 __webpack_require__(111);
 
 __webpack_require__(112);
 
+__webpack_require__(113);
+
 $(document).ready(function () {
+
+    var mobile_breakpoint = 1500;
+
+    var $i_message_desktop = $('.section-intro.demo-desktop .i-message');
+    var $sticky_section_desktop = $('.section-intro.demo-desktop');
+
+    var is_desktop_animation_viewed = false;
+    var is_mobile_animation_viewed = false;
+
+    var first_desktop_scene_is_played = false;
+
+    var $first_mobile_imessage = $('.section-intro.demo-mobile .first-slide .i-message');
+    var $second_mobile_imessage = $('.section-intro.demo-mobile .second-slide .i-message');
+
+    $first_mobile_imessage.iMessage();
+    $second_mobile_imessage.iMessage();
+
+    function update_time_scale() {
+        $i_message_desktop.iMessage('update_timescale', 10);
+    }
 
     function desktop_imessage_layout() {
 
-        var $i_message_demo = $('.section-intro.demo-desktop .i-message');
-        var $sticky_section = $('.section-intro.demo-desktop');
-
-        var first_scene_is_played = false;
-
-        $sticky_section.on('inArea.ss', function () {
-            first_scene();
+        $sticky_section_desktop.on('inArea.ss', function () {
+            first_desktop_scene();
         });
 
-        $sticky_section.on('scrolling.ss', second_scene);
+        $sticky_section_desktop.on('scrolling.ss', second_desktop_scene);
 
-        function update_time_scale() {
-            $i_message_demo.iMessage('update_timescale', 10);
-        }
+        $i_message_desktop.iMessage();
+        $sticky_section_desktop.stickySection();
+    }
 
-        function first_scene() {
-            TweenLite.to('.left-col .text-wrap', 1, {
-                opacity: 1, onComplete: function onComplete() {
+    function first_desktop_scene() {
+        TweenLite.to('.left-col .text-wrap', 1, {
+            opacity: 1, onComplete: function onComplete() {
 
-                    $sticky_section.on('scrolling.ss', update_time_scale);
+                $sticky_section_desktop.on('scrolling.ss', update_time_scale);
 
-                    $i_message_demo.iMessage('play_dialog', [{
-                        type: 'receive',
-                        text: "Test receive 2222  22221"
-                    }, {
-                        type: 'receive',
-                        text: "Test receive 2"
-                    }, {
-                        type: 'send',
-                        text: "Test send 1 send send send",
-                        delay: "+=1"
-                    }, {
-                        type: 'receive',
-                        text: "Test receive 3"
-                    }, {
-                        type: 'receive',
-                        text: "Test receive 4"
-                    }, {
-                        type: 'send',
-                        text: "Test send 2",
-                        delay: "+=1"
-                    }, {
-                        type: 'send',
-                        text: "Test send 3",
-                        delay: "+=1",
-                        after_play: function after_play() {
-                            first_scene_is_played = true;
-                            $sticky_section.off('scrolling.ss', update_time_scale);
-                        }
-                    }]);
-                }
-            });
-        }
+                $i_message_desktop.iMessage('play_dialog', [{
+                    type: 'receive',
+                    text: "Test receive 2222  22221"
+                }, {
+                    type: 'receive',
+                    text: "Test receive 2"
+                }, {
+                    type: 'send',
+                    text: "Test send 1 send send send",
+                    delay: "+=1"
+                }, {
+                    type: 'receive',
+                    text: "Test receive 3"
+                }, {
+                    type: 'receive',
+                    text: "Test receive 4"
+                }, {
+                    type: 'send',
+                    text: "Test send 2",
+                    delay: "+=1"
+                }, {
+                    type: 'send',
+                    text: "Test send 3",
+                    delay: "+=1",
+                    after_play: function after_play() {
+                        first_desktop_scene_is_played = true;
+                        $sticky_section_desktop.off('scrolling.ss', update_time_scale);
+                    }
+                }]);
+            }
+        });
+    }
 
-        function second_scene() {
+    function second_desktop_scene() {
 
-            if (!first_scene_is_played) return;
+        if (!first_desktop_scene_is_played) return;
 
-            $sticky_section.off('scrolling.ss', second_scene);
+        $sticky_section_desktop.off('scrolling.ss', second_desktop_scene);
 
-            $sticky_section.on('scrolling.ss', update_time_scale);
-            $i_message_demo.iMessage('update_timescale', 1);
-            $i_message_demo.iMessage('clear');
+        $sticky_section_desktop.on('scrolling.ss', update_time_scale);
+        $i_message_desktop.iMessage('update_timescale', 1);
+        $i_message_desktop.iMessage('clear');
 
-            TweenLite.to('.left-col .text-wrap', 1, { opacity: 0 });
-            TweenLite.to('.right-col .text-wrap', 1, {
-                opacity: 1, onComplete: function onComplete() {
+        TweenLite.to('.left-col .text-wrap', 1, { opacity: 0 });
+        TweenLite.to('.right-col .text-wrap', 1, {
+            opacity: 1, onComplete: function onComplete() {
 
-                    $i_message_demo.iMessage('play_dialog', [{
-                        type: 'receive',
-                        text: "New Test receive"
-                    }, {
-                        type: 'send',
-                        text: "New Test send 1 send send",
-                        delay: "+=1"
-                    }, {
-                        type: 'receive',
-                        text: "New Test receive 2"
-                    }, {
-                        type: 'send',
-                        text: "New Test send 2",
-                        delay: "+=1"
-                    }, {
-                        type: 'receive',
-                        text: "New Test receive 3"
-                    }, {
-                        type: 'send',
-                        text: "New Test send 3",
-                        delay: "+=1",
-                        after_play: function after_play() {
-                            $sticky_section.stickySection('unwatch_scroll');
-                            $sticky_section.stickySection('unstick');
-                        }
-                    }]);
-                }
-            });
-        }
-
-        $i_message_demo.iMessage();
-        $sticky_section.stickySection();
+                $i_message_desktop.iMessage('play_dialog', [{
+                    type: 'receive',
+                    text: "New Test receive"
+                }, {
+                    type: 'send',
+                    text: "New Test send 1 send send",
+                    delay: "+=1"
+                }, {
+                    type: 'receive',
+                    text: "New Test receive 2"
+                }, {
+                    type: 'send',
+                    text: "New Test send 2",
+                    delay: "+=1"
+                }, {
+                    type: 'receive',
+                    text: "New Test receive 3"
+                }, {
+                    type: 'send',
+                    text: "New Test send 3",
+                    delay: "+=1",
+                    after_play: function after_play() {
+                        $sticky_section_desktop.stickySection('unwatch_scroll');
+                        $sticky_section_desktop.stickySection('unstick');
+                    }
+                }]);
+            }
+        });
     }
 
     function mobile_imessage_layout() {
 
         var first_animation_played = false;
         var second_animation_played = false;
-
-        var $first_mobile_imessage = $('.section-intro.demo-mobile .first-slide .i-message');
-        var $second_mobile_imessage = $('.section-intro.demo-mobile .second-slide .i-message');
-
-        $first_mobile_imessage.iMessage();
-        $second_mobile_imessage.iMessage();
 
         function play_first_mobile_dialog() {
 
@@ -9257,12 +9262,30 @@ $(document).ready(function () {
         is_on_screen_handler();
     }
 
-    if ($('.section-intro.demo-desktop').length > 0) {
-        desktop_imessage_layout();
-    }
+    update_layout_visibility();
 
-    if ($('.section-intro.demo-mobile').length > 0) {
-        mobile_imessage_layout();
+    $(window).on('resize', update_layout_visibility);
+
+    function update_layout_visibility() {
+
+        var ww = $(window).outerWidth();
+
+        if (!is_desktop_animation_viewed && ww > mobile_breakpoint) {
+            is_desktop_animation_viewed = true;
+            desktop_imessage_layout();
+        } else if (is_desktop_animation_viewed && ww > mobile_breakpoint) {
+            $sticky_section_desktop.stickySection('watch_scroll');
+            $sticky_section_desktop.stickySection('stick');
+        }
+
+        if (!is_mobile_animation_viewed && ww <= mobile_breakpoint) {
+
+            $sticky_section_desktop.stickySection('unwatch_scroll');
+            $sticky_section_desktop.stickySection('unstick');
+
+            is_mobile_animation_viewed = true;
+            mobile_imessage_layout();
+        }
     }
 });
 
@@ -14401,6 +14424,54 @@ if ( !noGlobal ) {
 /* 111 */
 /***/ (function(module, exports) {
 
+(function($) {
+    $.fn.isOnScreen = function(x_offset, y_offset) {
+        if(x_offset == null || typeof x_offset == 'undefined') x_offset = 1;
+        if(y_offset == null || typeof y_offset == 'undefined') y_offset = 1;
+
+        var win = $(window),
+            viewport = {
+                top : win.scrollTop(),
+                left : win.scrollLeft()
+            },
+            height = this.outerHeight(),
+            width = this.outerWidth(),
+            bounds = this.offset(),
+            visible,
+            deltas;
+
+        viewport.right = viewport.left + win.width();
+        viewport.bottom = viewport.top + win.height();
+
+        if(!width || !height) return false;
+
+        bounds.right = bounds.left + width;
+        bounds.bottom = bounds.top + height;
+
+        visible = (
+            !(viewport.right < bounds.left ||
+            viewport.left > bounds.right ||
+            viewport.bottom < bounds.top ||
+            viewport.top > bounds.bottom)
+        );
+
+        if(!visible) return false;
+
+        deltas = {
+            top:    Math.min(1, (bounds.bottom - viewport.top) / height),
+            bottom: Math.min(1, (viewport.bottom - bounds.top) / height),
+            left:   Math.min(1, (bounds.right - viewport.left) / width),
+            right:  Math.min(1, (viewport.right - bounds.left) / width)
+        };
+
+        return (deltas.left * deltas.right) >= x_offset && (deltas.top * deltas.bottom) >= y_offset;
+    };
+})(jQuery);
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports) {
+
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -14606,6 +14677,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 e.preventDefault();
             }
         }, {
+            key: 'watch_scroll',
+            value: function watch_scroll() {
+                var self = this;
+
+                self.scroll_watch = true;
+            }
+        }, {
             key: 'unwatch_scroll',
             value: function unwatch_scroll() {
                 var self = this;
@@ -14692,7 +14770,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /******/ ]);
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports) {
 
 /******/ (function(modules) { // webpackBootstrap
@@ -15095,58 +15173,6 @@ __webpack_require__(1);
 
 /***/ })
 /******/ ]);
-
-/***/ }),
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */
-/***/ (function(module, exports) {
-
-(function($) {
-    $.fn.isOnScreen = function(x_offset, y_offset) {
-        if(x_offset == null || typeof x_offset == 'undefined') x_offset = 1;
-        if(y_offset == null || typeof y_offset == 'undefined') y_offset = 1;
-
-        var win = $(window),
-            viewport = {
-                top : win.scrollTop(),
-                left : win.scrollLeft()
-            },
-            height = this.outerHeight(),
-            width = this.outerWidth(),
-            bounds = this.offset(),
-            visible,
-            deltas;
-
-        viewport.right = viewport.left + win.width();
-        viewport.bottom = viewport.top + win.height();
-
-        if(!width || !height) return false;
-
-        bounds.right = bounds.left + width;
-        bounds.bottom = bounds.top + height;
-
-        visible = (
-            !(viewport.right < bounds.left ||
-            viewport.left > bounds.right ||
-            viewport.bottom < bounds.top ||
-            viewport.top > bounds.bottom)
-        );
-
-        if(!visible) return false;
-
-        deltas = {
-            top:    Math.min(1, (bounds.bottom - viewport.top) / height),
-            bottom: Math.min(1, (viewport.bottom - bounds.top) / height),
-            left:   Math.min(1, (bounds.right - viewport.left) / width),
-            right:  Math.min(1, (viewport.right - bounds.left) / width)
-        };
-
-        return (deltas.left * deltas.right) >= x_offset && (deltas.top * deltas.bottom) >= y_offset;
-    };
-})(jQuery);
 
 /***/ })
 /******/ ]);

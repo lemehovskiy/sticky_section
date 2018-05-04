@@ -7,6 +7,10 @@
   color: white;
 
   &.demo-desktop {
+    @media (max-width: 1500px) {
+      display: none;
+    }
+
     .container {
       width: 100%;
       display: flex;
@@ -45,6 +49,11 @@
   }
 
   &.demo-mobile {
+    @media (min-width: 1501px) {
+      display: none;
+    }
+
+
     .i-message {
       margin: auto;
     }

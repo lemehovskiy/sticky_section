@@ -203,6 +203,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 e.preventDefault();
             }
         }, {
+            key: 'watch_scroll',
+            value: function watch_scroll() {
+                var self = this;
+
+                self.scroll_watch = true;
+            }
+        }, {
             key: 'unwatch_scroll',
             value: function unwatch_scroll() {
                 var self = this;
