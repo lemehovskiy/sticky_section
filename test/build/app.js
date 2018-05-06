@@ -9275,8 +9275,37 @@ $(document).ready(function () {
             is_desktop_animation_viewed = true;
             desktop_imessage_layout();
         } else if (is_desktop_animation_viewed && ww > mobile_breakpoint) {
-            // $sticky_section_desktop.stickySection('watch_scroll');
-            // $sticky_section_desktop.stickySection('stick');
+            $i_message_desktop.iMessage('update_timescale', 1);
+            $i_message_desktop.iMessage('clear');
+
+            TweenLite.to('.left-col .text-wrap', 1, { opacity: 0 });
+            TweenLite.to('.right-col .text-wrap', 1, {
+                opacity: 1, onComplete: function onComplete() {
+
+                    $i_message_desktop.iMessage('play_dialog', [{
+                        type: 'receive',
+                        text: "New Test receive"
+                    }, {
+                        type: 'send',
+                        text: "New Test send 1 send send",
+                        delay: "+=1"
+                    }, {
+                        type: 'receive',
+                        text: "New Test receive 2"
+                    }, {
+                        type: 'send',
+                        text: "New Test send 2",
+                        delay: "+=1"
+                    }, {
+                        type: 'receive',
+                        text: "New Test receive 3"
+                    }, {
+                        type: 'send',
+                        text: "New Test send 3",
+                        delay: "+=1"
+                    }]);
+                }
+            });
         }
 
         if (is_desktop_animation_viewed && ww <= mobile_breakpoint) {
