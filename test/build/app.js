@@ -9271,17 +9271,53 @@ $(document).ready(function () {
         var ww = $(window).outerWidth();
 
         if (!is_desktop_animation_viewed && ww > mobile_breakpoint) {
+
             is_desktop_animation_viewed = true;
             desktop_imessage_layout();
         } else if (is_desktop_animation_viewed && ww > mobile_breakpoint) {
-            $sticky_section_desktop.stickySection('watch_scroll');
-            $sticky_section_desktop.stickySection('stick');
+            // $sticky_section_desktop.stickySection('watch_scroll');
+            // $sticky_section_desktop.stickySection('stick');
+        }
+
+        if (is_desktop_animation_viewed && ww <= mobile_breakpoint) {
+            $sticky_section_desktop.stickySection('unwatch_scroll');
+            $sticky_section_desktop.stickySection('unstick');
         }
 
         if (!is_mobile_animation_viewed && ww <= mobile_breakpoint) {
 
-            $sticky_section_desktop.stickySection('unwatch_scroll');
-            $sticky_section_desktop.stickySection('unstick');
+            // $i_message_desktop.iMessage('clear');
+            //
+            //
+            // $i_message_desktop.iMessage('set_dialog', [
+            //     {
+            //         type: 'receive',
+            //         text: "New Test receive"
+            //     },
+            //     {
+            //         type: 'send',
+            //         text: "New Test send 1 send send",
+            //         delay: "+=1"
+            //     },
+            //     {
+            //         type: 'receive',
+            //         text: "New Test receive 2"
+            //     },
+            //     {
+            //         type: 'send',
+            //         text: "New Test send 2",
+            //         delay: "+=1"
+            //     },
+            //     {
+            //         type: 'receive',
+            //         text: "New Test receive 3"
+            //     },
+            //     {
+            //         type: 'send',
+            //         text: "New Test send 3"
+            //     }
+            //
+            // ]);
 
             is_mobile_animation_viewed = true;
             mobile_imessage_layout();
@@ -14915,6 +14951,8 @@ __webpack_require__(1);
             value: function clear() {
                 var self = this;
 
+                self.master_tl.clear();
+
                 self.messages.forEach(function (message) {
                     message.$spacer.remove();
                 });
@@ -14942,6 +14980,49 @@ __webpack_require__(1);
                     '-ms-transform': 'scale(' + scale_coef + ')',
                     '-o-transform': 'scale(' + scale_coef + ')',
                     'transform': 'scale(' + scale_coef + ')'
+                });
+            }
+        }, {
+            key: 'set_dialog',
+            value: function set_dialog(messages) {
+                var self = this;
+
+                messages.forEach(function (message) {
+
+                    if (message.type == 'receive') {
+                        var $incoming_message_spacer = $("<div class='incoming-message-spacer' style='height: auto;'></div>");
+
+                        var $incoming_message = $("<div class='incoming-message' style='opacity: 1'>" + message.text + "</div>");
+
+                        self.messages.push({
+                            type: 'receive',
+                            $spacer: $incoming_message_spacer
+                        });
+
+                        self.$message_list.append($incoming_message_spacer);
+                        $incoming_message_spacer.append($incoming_message);
+                    } else if (message.type == 'send') {
+                        var $outgoing_message_spacer = $("<div class='outgoing-message-spacer'></div>");
+
+                        self.$message_list.append($outgoing_message_spacer);
+
+                        self.messages.push({
+                            type: 'receive',
+                            $spacer: $outgoing_message_spacer
+                        });
+
+                        var $outgoing_message = $("<div class='outgoing-message' style='position: relative;'>" + message.text + "</div>");
+                        $outgoing_message_spacer.append($outgoing_message);
+
+                        var $status_wrap = $("<div class='status-wrap' style='height: auto; opacity: 1'>Delivered</div>");
+                        $outgoing_message_spacer.append($status_wrap);
+
+                        var $old_status_messages = $('.outgoing-message-spacer:not(:last) .status-wrap');
+
+                        $old_status_messages.css({
+                            'display': 'none'
+                        });
+                    }
                 });
             }
         }, {
