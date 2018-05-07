@@ -15,11 +15,14 @@ $(document).ready(function () {
 
     let mobile_breakpoint = 1500;
 
+    let ww = $(window).width();
+
     let $i_message_desktop = $('.section-intro.demo-desktop .i-message');
     let $sticky_section_desktop = $('.section-intro.demo-desktop');
 
-    let is_desktop_animation_viewed = false;
-    let is_mobile_animation_viewed = false;
+    let full_desktop_animation_played = false;
+    let short_desktop_animation_played = false;
+    let mobile_animation_played = false;
 
     let first_desktop_scene_is_played = false;
 
@@ -32,21 +35,6 @@ $(document).ready(function () {
 
     function update_time_scale() {
         $i_message_desktop.iMessage('update_timescale', 10);
-    }
-
-    function desktop_imessage_layout() {
-
-
-        $sticky_section_desktop.on('inArea.ss', function () {
-            first_desktop_scene();
-        })
-
-        $sticky_section_desktop.on('scrolling.ss', second_desktop_scene)
-
-
-
-        $i_message_desktop.iMessage();
-        $sticky_section_desktop.stickySection();
     }
 
 
@@ -148,7 +136,101 @@ $(document).ready(function () {
         })
     }
 
-    function mobile_imessage_layout() {
+
+    // update_layout_visibility();
+
+    $(window).on('resize', full_desktop_layout);
+
+    $(window).on('resize', short_desktop_layout);
+
+    $(window).on('resize', mobile_layout);
+
+    $(window).on('resize', function(){
+        ww = $(window).width();
+    })
+
+    full_desktop_layout();
+    short_desktop_layout();
+    mobile_layout();
+
+
+    function full_desktop_layout() {
+        if (!short_desktop_animation_played && ww > mobile_breakpoint) {
+
+            full_desktop_animation_played = true;
+            $(window).off('resize', full_desktop_layout);
+
+            $sticky_section_desktop.on('inArea.ss', function () {
+                first_desktop_scene();
+            })
+
+            $sticky_section_desktop.on('scrolling.ss', second_desktop_scene)
+
+            $i_message_desktop.iMessage();
+            $sticky_section_desktop.stickySection();
+        }
+    }
+
+    function short_desktop_layout() {
+        if (mobile_animation_played && full_desktop_animation_played && !short_desktop_animation_played && ww > mobile_breakpoint) {
+
+            console.log('sdf');
+
+            short_desktop_animation_played = true;
+
+            $(window).off('resize', short_desktop_layout);
+
+            $i_message_desktop.iMessage('update_timescale', 1);
+            $i_message_desktop.iMessage('clear');
+
+            TweenLite.to('.left-col .text-wrap', 1, {opacity: 0});
+            TweenLite.to('.right-col .text-wrap', 1, {
+                opacity: 1, onComplete: function () {
+
+                    $i_message_desktop.iMessage('play_dialog', [
+                        {
+                            type: 'receive',
+                            text: "New Test receive"
+                        },
+                        {
+                            type: 'send',
+                            text: "New Test send 1 send send",
+                            delay: "+=1"
+                        },
+                        {
+                            type: 'receive',
+                            text: "New Test receive 2"
+                        },
+                        {
+                            type: 'send',
+                            text: "New Test send 2",
+                            delay: "+=1"
+                        },
+                        {
+                            type: 'receive',
+                            text: "New Test receive 3"
+                        },
+                        {
+                            type: 'send',
+                            text: "New Test send 3",
+                            delay: "+=1"
+                        }
+                    ]);
+                }
+            })
+        }
+    }
+
+    function mobile_layout() {
+
+        if (ww >= mobile_breakpoint) return;
+
+        mobile_animation_played = true;
+
+        $(window).off('resize', mobile_layout);
+
+        $sticky_section_desktop.stickySection('unwatch_scroll');
+        $sticky_section_desktop.stickySection('unstick');
 
         let first_animation_played = false;
         let second_animation_played = false;
@@ -232,7 +314,7 @@ $(document).ready(function () {
         }
 
 
-        function is_on_screen_handler(){
+        function is_on_screen_handler() {
             if ($('.section-intro.demo-mobile .first-slide').isOnScreen(0.8, 0.8) && !first_animation_played) {
                 play_first_mobile_dialog();
             }
@@ -251,107 +333,101 @@ $(document).ready(function () {
         is_on_screen_handler();
     }
 
-
-    update_layout_visibility();
-
-    $(window).on('resize', update_layout_visibility);
-
-
-    function update_layout_visibility(){
-
-        let ww = $(window).outerWidth();
-
-        if (!is_desktop_animation_viewed && ww > mobile_breakpoint) {
-
-            is_desktop_animation_viewed = true;
-            desktop_imessage_layout();
-        }
-
-        else if (is_desktop_animation_viewed && ww > mobile_breakpoint) {
-            $i_message_desktop.iMessage('update_timescale', 1);
-            $i_message_desktop.iMessage('clear');
-
-            TweenLite.to('.left-col .text-wrap', 1, {opacity: 0});
-            TweenLite.to('.right-col .text-wrap', 1, {
-                opacity: 1, onComplete: function () {
-
-                    $i_message_desktop.iMessage('play_dialog', [
-                        {
-                            type: 'receive',
-                            text: "New Test receive"
-                        },
-                        {
-                            type: 'send',
-                            text: "New Test send 1 send send",
-                            delay: "+=1"
-                        },
-                        {
-                            type: 'receive',
-                            text: "New Test receive 2"
-                        },
-                        {
-                            type: 'send',
-                            text: "New Test send 2",
-                            delay: "+=1"
-                        },
-                        {
-                            type: 'receive',
-                            text: "New Test receive 3"
-                        },
-                        {
-                            type: 'send',
-                            text: "New Test send 3",
-                            delay: "+=1"
-                        }
-                    ]);
-                }
-            })
-        }
-
-        if (is_desktop_animation_viewed && ww <= mobile_breakpoint) {
-            $sticky_section_desktop.stickySection('unwatch_scroll');
-            $sticky_section_desktop.stickySection('unstick');
-        }
-
-        if (!is_mobile_animation_viewed && ww <= mobile_breakpoint) {
-
-            // $i_message_desktop.iMessage('clear');
-            //
-            //
-            // $i_message_desktop.iMessage('set_dialog', [
-            //     {
-            //         type: 'receive',
-            //         text: "New Test receive"
-            //     },
-            //     {
-            //         type: 'send',
-            //         text: "New Test send 1 send send",
-            //         delay: "+=1"
-            //     },
-            //     {
-            //         type: 'receive',
-            //         text: "New Test receive 2"
-            //     },
-            //     {
-            //         type: 'send',
-            //         text: "New Test send 2",
-            //         delay: "+=1"
-            //     },
-            //     {
-            //         type: 'receive',
-            //         text: "New Test receive 3"
-            //     },
-            //     {
-            //         type: 'send',
-            //         text: "New Test send 3"
-            //     }
-            //
-            // ]);
-
-            is_mobile_animation_viewed = true;
-            mobile_imessage_layout();
-
-        }
-
-    }
+    // function update_layout_visibility(){
+    //
+    //     let ww = $(window).outerWidth();
+    //
+    //     if (!is_desktop_animation_viewed && ww > mobile_breakpoint) {
+    //
+    //         is_desktop_animation_viewed = true;
+    //         desktop_imessage_layout();
+    //     }
+    //
+    //     else if (is_desktop_animation_viewed && ww > mobile_breakpoint) {
+    //         $i_message_desktop.iMessage('update_timescale', 1);
+    //         $i_message_desktop.iMessage('clear');
+    //
+    //         TweenLite.to('.left-col .text-wrap', 1, {opacity: 0});
+    //         TweenLite.to('.right-col .text-wrap', 1, {
+    //             opacity: 1, onComplete: function () {
+    //
+    //                 $i_message_desktop.iMessage('play_dialog', [
+    //                     {
+    //                         type: 'receive',
+    //                         text: "New Test receive"
+    //                     },
+    //                     {
+    //                         type: 'send',
+    //                         text: "New Test send 1 send send",
+    //                         delay: "+=1"
+    //                     },
+    //                     {
+    //                         type: 'receive',
+    //                         text: "New Test receive 2"
+    //                     },
+    //                     {
+    //                         type: 'send',
+    //                         text: "New Test send 2",
+    //                         delay: "+=1"
+    //                     },
+    //                     {
+    //                         type: 'receive',
+    //                         text: "New Test receive 3"
+    //                     },
+    //                     {
+    //                         type: 'send',
+    //                         text: "New Test send 3",
+    //                         delay: "+=1"
+    //                     }
+    //                 ]);
+    //             }
+    //         })
+    //     }
+    //
+    //     if (is_desktop_animation_viewed && ww <= mobile_breakpoint) {
+    //         $sticky_section_desktop.stickySection('unwatch_scroll');
+    //         $sticky_section_desktop.stickySection('unstick');
+    //     }
+    //
+    //     if (!is_mobile_animation_viewed && ww <= mobile_breakpoint) {
+    //
+    //         // $i_message_desktop.iMessage('clear');
+    //         //
+    //         //
+    //         // $i_message_desktop.iMessage('set_dialog', [
+    //         //     {
+    //         //         type: 'receive',
+    //         //         text: "New Test receive"
+    //         //     },
+    //         //     {
+    //         //         type: 'send',
+    //         //         text: "New Test send 1 send send",
+    //         //         delay: "+=1"
+    //         //     },
+    //         //     {
+    //         //         type: 'receive',
+    //         //         text: "New Test receive 2"
+    //         //     },
+    //         //     {
+    //         //         type: 'send',
+    //         //         text: "New Test send 2",
+    //         //         delay: "+=1"
+    //         //     },
+    //         //     {
+    //         //         type: 'receive',
+    //         //         text: "New Test receive 3"
+    //         //     },
+    //         //     {
+    //         //         type: 'send',
+    //         //         text: "New Test send 3"
+    //         //     }
+    //         //
+    //         // ]);
+    //
+    //         is_mobile_animation_viewed = true;
+    //         mobile_imessage_layout();
+    //
+    //     }
+    //
+    // }
 });
