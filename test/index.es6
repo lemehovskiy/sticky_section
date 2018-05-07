@@ -87,6 +87,8 @@ $(document).ready(function () {
 
     function second_desktop_scene() {
 
+        console.log('second');
+
         if (!first_desktop_scene_is_played) return;
 
         $sticky_section_desktop.off('scrolling.ss', second_desktop_scene)

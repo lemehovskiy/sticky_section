@@ -127,7 +127,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     self.scroll_handler();
                 });
 
-                $(window).on('mousewheel', function (e) {
+                $(window).on('wheel', function (e) {
                     if (self.in_area) {
                         self.mouse_wheel_handler();
                     }
@@ -149,15 +149,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                 if (!self.in_area && self.scroll_watch && self.is_on_screen(0.6, 0.6)) {
 
-                    console.log('is_on_screen');
-
                     self.stick();
 
                     self.stop_body_scrolling(true);
 
-                    $('html, body').animate({ scrollTop: self.$element.offset().top }, 300, 'linear', function () {
-                        console.log('animate');
-                    });
+                    $('html, body').animate({ scrollTop: self.$element.offset().top }, 300, 'linear', function () {});
                 }
             }
         }, {
