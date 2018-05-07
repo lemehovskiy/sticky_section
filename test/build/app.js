@@ -9251,11 +9251,13 @@ $(document).ready(function () {
 
         $(window).off('resize', mobile_layout);
 
-        $sticky_section_desktop.stickySection('unwatch_scroll');
-        $sticky_section_desktop.stickySection('unstick');
-
         var first_animation_played = false;
         var second_animation_played = false;
+
+        if (full_desktop_animation_played) {
+            $sticky_section_desktop.stickySection('unwatch_scroll');
+            $sticky_section_desktop.stickySection('unstick');
+        }
 
         function play_first_mobile_dialog() {
 
@@ -9337,104 +9339,6 @@ $(document).ready(function () {
 
         is_on_screen_handler();
     }
-
-    // function update_layout_visibility(){
-    //
-    //     let ww = $(window).outerWidth();
-    //
-    //     if (!is_desktop_animation_viewed && ww > mobile_breakpoint) {
-    //
-    //         is_desktop_animation_viewed = true;
-    //         desktop_imessage_layout();
-    //     }
-    //
-    //     else if (is_desktop_animation_viewed && ww > mobile_breakpoint) {
-    //         $i_message_desktop.iMessage('update_timescale', 1);
-    //         $i_message_desktop.iMessage('clear');
-    //
-    //         TweenLite.to('.left-col .text-wrap', 1, {opacity: 0});
-    //         TweenLite.to('.right-col .text-wrap', 1, {
-    //             opacity: 1, onComplete: function () {
-    //
-    //                 $i_message_desktop.iMessage('play_dialog', [
-    //                     {
-    //                         type: 'receive',
-    //                         text: "New Test receive"
-    //                     },
-    //                     {
-    //                         type: 'send',
-    //                         text: "New Test send 1 send send",
-    //                         delay: "+=1"
-    //                     },
-    //                     {
-    //                         type: 'receive',
-    //                         text: "New Test receive 2"
-    //                     },
-    //                     {
-    //                         type: 'send',
-    //                         text: "New Test send 2",
-    //                         delay: "+=1"
-    //                     },
-    //                     {
-    //                         type: 'receive',
-    //                         text: "New Test receive 3"
-    //                     },
-    //                     {
-    //                         type: 'send',
-    //                         text: "New Test send 3",
-    //                         delay: "+=1"
-    //                     }
-    //                 ]);
-    //             }
-    //         })
-    //     }
-    //
-    //     if (is_desktop_animation_viewed && ww <= mobile_breakpoint) {
-    //         $sticky_section_desktop.stickySection('unwatch_scroll');
-    //         $sticky_section_desktop.stickySection('unstick');
-    //     }
-    //
-    //     if (!is_mobile_animation_viewed && ww <= mobile_breakpoint) {
-    //
-    //         // $i_message_desktop.iMessage('clear');
-    //         //
-    //         //
-    //         // $i_message_desktop.iMessage('set_dialog', [
-    //         //     {
-    //         //         type: 'receive',
-    //         //         text: "New Test receive"
-    //         //     },
-    //         //     {
-    //         //         type: 'send',
-    //         //         text: "New Test send 1 send send",
-    //         //         delay: "+=1"
-    //         //     },
-    //         //     {
-    //         //         type: 'receive',
-    //         //         text: "New Test receive 2"
-    //         //     },
-    //         //     {
-    //         //         type: 'send',
-    //         //         text: "New Test send 2",
-    //         //         delay: "+=1"
-    //         //     },
-    //         //     {
-    //         //         type: 'receive',
-    //         //         text: "New Test receive 3"
-    //         //     },
-    //         //     {
-    //         //         type: 'send',
-    //         //         text: "New Test send 3"
-    //         //     }
-    //         //
-    //         // ]);
-    //
-    //         is_mobile_animation_viewed = true;
-    //         mobile_imessage_layout();
-    //
-    //     }
-    //
-    // }
 });
 
 /***/ }),
@@ -15077,21 +14981,16 @@ __webpack_require__(1);
                 var self = this;
 
                 var container_width = self.$container.innerWidth();
+                var element_width = self.$element.outerWidth();
 
-                var scale_coef = 1;
-
-                if (container_width < 300) {
-                    scale_coef = container_width / 300;
-                } else if (container_width > 300) {
-                    scale_coef = 1;
-                }
+                var scale_coef = container_width / element_width;
 
                 self.$element.css({
-                    '-webkit-transform': 'scale(' + scale_coef + ')',
-                    '-moz-transform': 'scale(' + scale_coef + ')',
-                    '-ms-transform': 'scale(' + scale_coef + ')',
-                    '-o-transform': 'scale(' + scale_coef + ')',
-                    'transform': 'scale(' + scale_coef + ')'
+                    '-webkit-transform': 'scale(' + scale_coef + ') translate(-50%, -50%)',
+                    '-moz-transform': 'scale(' + scale_coef + ') translate(-50%, -50%)',
+                    '-ms-transform': 'scale(' + scale_coef + ') translate(-50%, -50%)',
+                    '-o-transform': 'scale(' + scale_coef + ') translate(-50%, -50%)',
+                    'transform': 'scale(' + scale_coef + ') translate(-50%, -50%)'
                 });
             }
         }, {

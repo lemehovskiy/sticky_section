@@ -229,11 +229,13 @@ $(document).ready(function () {
 
         $(window).off('resize', mobile_layout);
 
-        $sticky_section_desktop.stickySection('unwatch_scroll');
-        $sticky_section_desktop.stickySection('unstick');
-
         let first_animation_played = false;
         let second_animation_played = false;
+
+        if (full_desktop_animation_played) {
+            $sticky_section_desktop.stickySection('unwatch_scroll');
+            $sticky_section_desktop.stickySection('unstick');
+        }
 
         function play_first_mobile_dialog() {
 
@@ -333,101 +335,4 @@ $(document).ready(function () {
         is_on_screen_handler();
     }
 
-    // function update_layout_visibility(){
-    //
-    //     let ww = $(window).outerWidth();
-    //
-    //     if (!is_desktop_animation_viewed && ww > mobile_breakpoint) {
-    //
-    //         is_desktop_animation_viewed = true;
-    //         desktop_imessage_layout();
-    //     }
-    //
-    //     else if (is_desktop_animation_viewed && ww > mobile_breakpoint) {
-    //         $i_message_desktop.iMessage('update_timescale', 1);
-    //         $i_message_desktop.iMessage('clear');
-    //
-    //         TweenLite.to('.left-col .text-wrap', 1, {opacity: 0});
-    //         TweenLite.to('.right-col .text-wrap', 1, {
-    //             opacity: 1, onComplete: function () {
-    //
-    //                 $i_message_desktop.iMessage('play_dialog', [
-    //                     {
-    //                         type: 'receive',
-    //                         text: "New Test receive"
-    //                     },
-    //                     {
-    //                         type: 'send',
-    //                         text: "New Test send 1 send send",
-    //                         delay: "+=1"
-    //                     },
-    //                     {
-    //                         type: 'receive',
-    //                         text: "New Test receive 2"
-    //                     },
-    //                     {
-    //                         type: 'send',
-    //                         text: "New Test send 2",
-    //                         delay: "+=1"
-    //                     },
-    //                     {
-    //                         type: 'receive',
-    //                         text: "New Test receive 3"
-    //                     },
-    //                     {
-    //                         type: 'send',
-    //                         text: "New Test send 3",
-    //                         delay: "+=1"
-    //                     }
-    //                 ]);
-    //             }
-    //         })
-    //     }
-    //
-    //     if (is_desktop_animation_viewed && ww <= mobile_breakpoint) {
-    //         $sticky_section_desktop.stickySection('unwatch_scroll');
-    //         $sticky_section_desktop.stickySection('unstick');
-    //     }
-    //
-    //     if (!is_mobile_animation_viewed && ww <= mobile_breakpoint) {
-    //
-    //         // $i_message_desktop.iMessage('clear');
-    //         //
-    //         //
-    //         // $i_message_desktop.iMessage('set_dialog', [
-    //         //     {
-    //         //         type: 'receive',
-    //         //         text: "New Test receive"
-    //         //     },
-    //         //     {
-    //         //         type: 'send',
-    //         //         text: "New Test send 1 send send",
-    //         //         delay: "+=1"
-    //         //     },
-    //         //     {
-    //         //         type: 'receive',
-    //         //         text: "New Test receive 2"
-    //         //     },
-    //         //     {
-    //         //         type: 'send',
-    //         //         text: "New Test send 2",
-    //         //         delay: "+=1"
-    //         //     },
-    //         //     {
-    //         //         type: 'receive',
-    //         //         text: "New Test receive 3"
-    //         //     },
-    //         //     {
-    //         //         type: 'send',
-    //         //         text: "New Test send 3"
-    //         //     }
-    //         //
-    //         // ]);
-    //
-    //         is_mobile_animation_viewed = true;
-    //         mobile_imessage_layout();
-    //
-    //     }
-    //
-    // }
 });

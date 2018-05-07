@@ -3,6 +3,9 @@
 @import "_reset.scss";
 @import "mixins.scss";
 
+
+@import "../../../i_message/src/i_message.scss";
+
 body {
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
@@ -52,4 +55,3 @@ section {
 }
 
 @import "partials/section-intro";
-@import "partials/i_message";
